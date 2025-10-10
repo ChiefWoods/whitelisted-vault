@@ -6,7 +6,8 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-whitelisted_vault = "Da6Lqo1Edg3K7FddRvcr4xY7KZbNy1stRtZPqtt6QSUQ"
+vault = "EmLpgnrx4SB1kQaEZnTMnHEUVsVTJAcuxyPabds52Jed"
+whitelist = "5ydZBsgy14hPhvnfoWFg8fpghR91T6uJvtKknbd7yuBK"
 
 [registry]
 url = "https://api.apr.dev"

@@ -1,12 +1,12 @@
 [package]
-name = "whitelisted-vault"
+name = "whitelist"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "whitelisted_vault"
+name = "whitelist"
 
 [features]
 default = []
