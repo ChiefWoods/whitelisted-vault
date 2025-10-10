@@ -15,7 +15,15 @@ declare_id!("EmLpgnrx4SB1kQaEZnTMnHEUVsVTJAcuxyPabds52Jed");
 pub mod vault {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        initialize::handler(ctx)
+    pub fn initialize_vault(ctx: Context<InitializeVault>) -> Result<()> {
+        InitializeVault::handler(ctx)
+    }
+
+    pub fn deposit(ctx: Context<Deposit>, amount: u64) -> Result<()> {
+        Deposit::handler(ctx, amount)
+    }
+
+    pub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
+        Withdraw::handler(ctx, amount)
     }
 }
