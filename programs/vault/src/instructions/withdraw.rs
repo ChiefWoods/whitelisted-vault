@@ -248,13 +248,9 @@ mod tests {
                     mint: mint.pubkey(),
                     payer: admin.pubkey(),
                     system_program: SYSTEM_PROGRAM_ID,
-                    whitelist: whitelist_pda,
                 }
                 .to_account_metas(None),
-                data: InitializeExtraAccountMetaListData {
-                    whitelisted_address,
-                }
-                .data(),
+                data: InitializeExtraAccountMetaListData {}.data(),
                 program_id: WHITELIST_PROGRAM_ID,
             },
             Instruction {
@@ -375,12 +371,6 @@ mod tests {
         });
 
         ix.accounts.push(AccountMeta {
-            pubkey: vault_pda,
-            is_signer: false,
-            is_writable: false,
-        });
-
-        ix.accounts.push(AccountMeta {
             pubkey: extra_account_meta_list_pda,
             is_signer: false,
             is_writable: false,
@@ -392,8 +382,7 @@ mod tests {
             is_writable: false,
         });
 
-        let meta = build_and_send_transaction(litesvm, &[&depositor], &depositor.pubkey(), &[ix]);
-        println!("{}", meta.unwrap_err().meta.pretty_logs());
+        let _ = build_and_send_transaction(litesvm, &[&depositor], &depositor.pubkey(), &[ix]);
 
         let post_depositor_ata_bal = fetch_account::<TokenAccount>(litesvm, &depositor_ata).amount;
 

@@ -109,41 +109,11 @@
           "name": "mint"
         },
         {
-          "name": "whitelist",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  119,
-                  104,
-                  105,
-                  116,
-                  101,
-                  108,
-                  105,
-                  115,
-                  116
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "whitelisted_address"
-              }
-            ]
-          }
-        },
-        {
           "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
-      "args": [
-        {
-          "name": "whitelisted_address",
-          "type": "pubkey"
-        }
-      ]
+      "args": []
     },
     {
       "name": "initialize_mint",
@@ -313,13 +283,10 @@
               },
               {
                 "kind": "account",
-                "path": "whitelisted_address"
+                "path": "owner"
               }
             ]
           }
-        },
-        {
-          "name": "whitelisted_address"
         }
       ],
       "args": [

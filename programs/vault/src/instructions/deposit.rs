@@ -220,13 +220,9 @@ mod tests {
                     mint: mint.pubkey(),
                     payer: admin.pubkey(),
                     system_program: SYSTEM_PROGRAM_ID,
-                    whitelist: whitelist_pda,
                 }
                 .to_account_metas(None),
-                data: InitializeExtraAccountMetaListData {
-                    whitelisted_address,
-                }
-                .data(),
+                data: InitializeExtraAccountMetaListData {}.data(),
                 program_id: WHITELIST_PROGRAM_ID,
             },
             Instruction {
@@ -275,12 +271,6 @@ mod tests {
 
         ix.accounts.push(AccountMeta {
             pubkey: whitelist_pda,
-            is_signer: false,
-            is_writable: false,
-        });
-
-        ix.accounts.push(AccountMeta {
-            pubkey: depositor.pubkey(),
             is_signer: false,
             is_writable: false,
         });

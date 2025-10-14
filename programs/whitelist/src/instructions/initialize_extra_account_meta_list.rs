@@ -1,12 +1,13 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::Mint;
-use spl_tlv_account_resolution::{account::ExtraAccountMeta, state::ExtraAccountMetaList};
+use spl_tlv_account_resolution::{
+    account::ExtraAccountMeta, seeds::Seed, state::ExtraAccountMetaList,
+};
 use spl_transfer_hook_interface::instruction::ExecuteInstruction;
 
-use crate::{Whitelist, EXTRA_ACCOUNT_METAS_SEED, WHITELIST_SEED};
+use crate::{EXTRA_ACCOUNT_METAS_SEED, WHITELIST_SEED};
 
 #[derive(Accounts)]
-#[instruction(whitelisted_address: Pubkey)]
 pub struct InitializeExtraAccountMetaList<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -17,38 +18,30 @@ pub struct InitializeExtraAccountMetaList<'info> {
         seeds = [EXTRA_ACCOUNT_METAS_SEED, mint.key().as_ref()],
         bump,
         space = ExtraAccountMetaList::size_of(
-            InitializeExtraAccountMetaList::extra_account_metas(whitelist.key(), whitelisted_address)?.len()
+            InitializeExtraAccountMetaList::extra_account_metas()?.len()
         ).unwrap()
     )]
     pub extra_account_meta_list: UncheckedAccount<'info>,
     pub mint: InterfaceAccount<'info, Mint>,
-    #[account(
-        seeds = [WHITELIST_SEED, whitelisted_address.as_ref()],
-        bump = whitelist.bump,
-    )]
-    pub whitelist: Account<'info, Whitelist>,
     pub system_program: Program<'info, System>,
 }
 
 impl<'info> InitializeExtraAccountMetaList<'info> {
-    fn extra_account_metas(
-        whitelist: Pubkey,
-        whitelisted_address: Pubkey,
-    ) -> Result<Vec<ExtraAccountMeta>> {
-        Ok(vec![
-            ExtraAccountMeta::new_with_pubkey(&whitelist, false, false)?,
-            ExtraAccountMeta::new_with_pubkey(&whitelisted_address, false, false)?,
-        ])
+    fn extra_account_metas() -> Result<Vec<ExtraAccountMeta>> {
+        Ok(vec![ExtraAccountMeta::new_with_seeds(
+            &[
+                Seed::Literal {
+                    bytes: WHITELIST_SEED.to_vec(),
+                },
+                Seed::AccountKey { index: 3 },
+            ],
+            false,
+            false,
+        )?])
     }
 
-    pub fn handler(
-        ctx: Context<InitializeExtraAccountMetaList>,
-        whitelisted_address: Pubkey,
-    ) -> Result<()> {
-        let extra_account_metas = InitializeExtraAccountMetaList::extra_account_metas(
-            ctx.accounts.whitelist.key(),
-            whitelisted_address,
-        )?;
+    pub fn handler(ctx: Context<InitializeExtraAccountMetaList>) -> Result<()> {
+        let extra_account_metas = InitializeExtraAccountMetaList::extra_account_metas()?;
 
         ExtraAccountMetaList::init::<ExecuteInstruction>(
             &mut ctx.accounts.extra_account_meta_list.try_borrow_mut_data()?,
@@ -62,7 +55,6 @@ impl<'info> InitializeExtraAccountMetaList<'info> {
 #[cfg(test)]
 mod tests {
     use anchor_lang::prelude::instruction::Instruction;
-    use anchor_lang::prelude::Pubkey;
     use anchor_lang::{InstructionData, ToAccountMetas};
     use solana_keypair::Keypair;
     use solana_program::native_token::LAMPORTS_PER_SOL;
@@ -128,7 +120,6 @@ mod tests {
 
         let extra_account_meta_list_pda =
             get_extra_account_metas_address(&mint.pubkey(), &PROGRAM_ID);
-        let whitelist_pda = get_whitelist_pda(&address1.pubkey());
 
         let ix = Instruction {
             accounts: InitializeExtraAccountMetaListAccounts {
@@ -150,18 +141,10 @@ mod tests {
         // 8 bytes for discriminator, 4 bytes for length, the rest is ExtraAccountMetaList
         let extra_account_meta_list_bytes = &extra_accounts_meta_list_acc.data[12..];
         // 4 bytes for count
-        let (count_bytes, extra_accounts_meta_bytes) = extra_account_meta_list_bytes.split_at(4);
+        let (count_bytes, _extra_accounts_meta_bytes) = extra_account_meta_list_bytes.split_at(4);
 
         let count = u32::from_le_bytes(count_bytes.try_into().unwrap());
 
         assert_eq!(count, 1);
-
-        // 1 byte for discriminator, 32 bytes for address_config, 1 byte for is_signer, 1 byte for is_writable
-        let extra_account_meta_bytes_vec = extra_accounts_meta_bytes.chunks(35).collect::<Vec<_>>();
-
-        let whitelist_pubkey =
-            Pubkey::new_from_array(extra_account_meta_bytes_vec[0][1..33].try_into().unwrap());
-
-        assert_eq!(whitelist_pda, whitelist_pubkey);
     }
 }

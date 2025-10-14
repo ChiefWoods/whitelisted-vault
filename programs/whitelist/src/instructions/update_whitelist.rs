@@ -168,13 +168,13 @@ mod tests {
         .unwrap();
 
         ix.accounts.push(AccountMeta {
-            pubkey: extra_account_meta_list_pda,
+            pubkey: whitelist_pda,
             is_signer: false,
             is_writable: false,
         });
 
         ix.accounts.push(AccountMeta {
-            pubkey: whitelist_pda,
+            pubkey: extra_account_meta_list_pda,
             is_signer: false,
             is_writable: false,
         });

@@ -33,12 +33,10 @@ pub struct TransferHook<'info> {
     )]
     pub extra_account_meta_list: UncheckedAccount<'info>,
     #[account(
-        seeds = [WHITELIST_SEED, whitelisted_address.key().as_ref()],
+        seeds = [WHITELIST_SEED, owner.key().as_ref()],
         bump = whitelist.bump,
     )]
     pub whitelist: Account<'info, Whitelist>,
-    /// CHECK: Authority of token account
-    pub whitelisted_address: UncheckedAccount<'info>,
 }
 
 impl<'info> TransferHook<'info> {
@@ -106,7 +104,6 @@ mod tests {
         let whitelist_pda = get_whitelist_pda(&address1.pubkey());
         let extra_account_meta_list_pda =
             get_extra_account_metas_address(&mint.pubkey(), &PROGRAM_ID);
-        let whitelisted_address = address1.pubkey();
 
         let ixs = vec![
             Instruction {
@@ -191,12 +188,6 @@ mod tests {
 
         ix.accounts.push(AccountMeta {
             pubkey: whitelist_pda,
-            is_signer: false,
-            is_writable: false,
-        });
-
-        ix.accounts.push(AccountMeta {
-            pubkey: address1.pubkey(),
             is_signer: false,
             is_writable: false,
         });
