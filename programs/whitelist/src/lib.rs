@@ -2,6 +2,7 @@ pub mod constants;
 pub mod error;
 pub mod instructions;
 pub mod state;
+pub mod tests;
 
 use anchor_lang::prelude::*;
 
@@ -40,9 +41,8 @@ pub mod whitelist {
     #[instruction(discriminator = InitializeExtraAccountMetaListInstruction::SPL_DISCRIMINATOR_SLICE)]
     pub fn initialize_extra_account_meta_list(
         ctx: Context<InitializeExtraAccountMetaList>,
-        whitelisted_address: Pubkey,
     ) -> Result<()> {
-        InitializeExtraAccountMetaList::handler(ctx, whitelisted_address)
+        InitializeExtraAccountMetaList::handler(ctx)
     }
 
     #[instruction(discriminator = ExecuteInstruction::SPL_DISCRIMINATOR_SLICE)]

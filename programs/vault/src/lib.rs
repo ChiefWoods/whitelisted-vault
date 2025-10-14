@@ -2,6 +2,7 @@ pub mod constants;
 pub mod error;
 pub mod instructions;
 pub mod state;
+pub mod tests;
 
 use anchor_lang::prelude::*;
 
@@ -9,6 +10,7 @@ pub use constants::*;
 pub use instructions::*;
 pub use state::*;
 
+declare_program!(whitelist);
 declare_id!("EmLpgnrx4SB1kQaEZnTMnHEUVsVTJAcuxyPabds52Jed");
 
 #[program]
@@ -19,11 +21,17 @@ pub mod vault {
         InitializeVault::handler(ctx)
     }
 
-    pub fn deposit(ctx: Context<Deposit>, amount: u64) -> Result<()> {
+    pub fn deposit<'c: 'info, 'info>(
+        ctx: Context<'_, '_, 'c, 'info, Deposit<'info>>,
+        amount: u64,
+    ) -> Result<()> {
         Deposit::handler(ctx, amount)
     }
 
-    pub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
+    pub fn withdraw<'c: 'info, 'info>(
+        ctx: Context<'_, '_, 'c, 'info, Withdraw<'info>>,
+        amount: u64,
+    ) -> Result<()> {
         Withdraw::handler(ctx, amount)
     }
 }

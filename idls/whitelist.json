@@ -1,0 +1,503 @@
+{
+  "address": "5ydZBsgy14hPhvnfoWFg8fpghR91T6uJvtKknbd7yuBK",
+  "metadata": {
+    "name": "whitelist",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "initialize_config",
+      "discriminator": [
+        208,
+        127,
+        21,
+        1,
+        194,
+        190,
+        196,
+        70
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_extra_account_meta_list",
+      "discriminator": [
+        43,
+        34,
+        13,
+        49,
+        167,
+        88,
+        235,
+        235
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "whitelist",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  104,
+                  105,
+                  116,
+                  101,
+                  108,
+                  105,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "whitelisted_address"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "whitelisted_address",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "initialize_mint",
+      "discriminator": [
+        209,
+        42,
+        195,
+        4,
+        129,
+        85,
+        209,
+        44
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_whitelist",
+      "discriminator": [
+        223,
+        228,
+        11,
+        219,
+        112,
+        174,
+        108,
+        18
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "whitelist",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  104,
+                  105,
+                  116,
+                  101,
+                  108,
+                  105,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "whitelisted_address"
+              }
+            ]
+          }
+        },
+        {
+          "name": "whitelisted_address"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transfer_hook",
+      "discriminator": [
+        105,
+        37,
+        101,
+        197,
+        75,
+        251,
+        102,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "source_token"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "destination_token"
+        },
+        {
+          "name": "owner"
+        },
+        {
+          "name": "extra_account_meta_list",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "whitelist",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  104,
+                  105,
+                  116,
+                  101,
+                  108,
+                  105,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "whitelisted_address"
+              }
+            ]
+          }
+        },
+        {
+          "name": "whitelisted_address"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_whitelist",
+      "discriminator": [
+        94,
+        198,
+        33,
+        20,
+        192,
+        97,
+        44,
+        59
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "whitelist",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  104,
+                  105,
+                  116,
+                  101,
+                  108,
+                  105,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "whitelisted_address"
+              }
+            ]
+          }
+        },
+        {
+          "name": "whitelisted_address"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "is_blocked",
+          "type": "bool"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "Whitelist",
+      "discriminator": [
+        204,
+        176,
+        52,
+        79,
+        146,
+        121,
+        54,
+        247
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAdmin",
+      "msg": "Whitelist admin does not match"
+    },
+    {
+      "code": 6001,
+      "name": "NotTransferring",
+      "msg": "Transfer hook cannot be directly invoked"
+    },
+    {
+      "code": 6002,
+      "name": "AddressBlocked",
+      "msg": "Address is blocked from transferring tokens"
+    }
+  ],
+  "types": [
+    {
+      "name": "Config",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Whitelist",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": "pubkey"
+          },
+          {
+            "name": "is_blocked",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "CONFIG_SEED",
+      "type": "bytes",
+      "value": "[99, 111, 110, 102, 105, 103]"
+    }
+  ]
+}
