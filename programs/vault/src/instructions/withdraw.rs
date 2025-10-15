@@ -87,22 +87,12 @@ impl<'info> Withdraw<'info> {
             validate_state_info.clone(),
         ];
 
-        for acc in execute_instruction.accounts.iter() {
-            msg!("execute ix account: {}", acc.pubkey);
-        }
-
-        for acc in execute_account_infos.iter() {
-            msg!("execute account info: {}", acc.key());
-        }
-
         ExtraAccountMetaList::add_to_cpi_instruction::<ExecuteInstruction>(
             &mut execute_instruction,
             &mut execute_account_infos,
             &validate_state_info.try_borrow_data()?,
             remaining_accounts,
         )?;
-
-        msg!("add_to_cpi_instruction");
 
         let vault_key = vault.key();
         let whitelist_seeds: &[&[u8]] = &[b"whitelist", vault_key.as_ref()];
@@ -130,14 +120,6 @@ impl<'info> Withdraw<'info> {
             is_writable: false,
         });
         ctx_account_infos.extend_from_slice(&execute_account_infos[5..]);
-
-        for acc in ix.accounts.iter() {
-            msg!("ix account: {}", acc.pubkey);
-        }
-
-        for acc in ctx_account_infos.iter() {
-            msg!("ctx account info: {}", acc.key());
-        }
 
         ix.accounts.push(AccountMeta {
             pubkey: validate_state_info.key(),
