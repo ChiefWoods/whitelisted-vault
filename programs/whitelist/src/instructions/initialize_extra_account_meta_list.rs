@@ -141,10 +141,26 @@ mod tests {
         // 8 bytes for discriminator, 4 bytes for length, the rest is ExtraAccountMetaList
         let extra_account_meta_list_bytes = &extra_accounts_meta_list_acc.data[12..];
         // 4 bytes for count
-        let (count_bytes, _extra_accounts_meta_bytes) = extra_account_meta_list_bytes.split_at(4);
+        let (count_bytes, extra_accounts_meta_bytes) = extra_account_meta_list_bytes.split_at(4);
 
         let count = u32::from_le_bytes(count_bytes.try_into().unwrap());
 
         assert_eq!(count, 1);
+
+        // 1 byte for discriminator, 32 bytes for address_config, 1 byte for is_signer, 1 byte for is_writable
+        // let extra_account_meta_bytes_vec = extra_accounts_meta_bytes.chunks(35).collect::<Vec<_>>();
+        let extra_account_meta_bytes_vec = &extra_accounts_meta_bytes[..35];
+
+        let discriminator = extra_account_meta_bytes_vec[0];
+
+        assert_eq!(discriminator, 1);
+
+        let is_signer = extra_account_meta_bytes_vec[33] != 0;
+
+        assert!(!is_signer);
+
+        let is_writable = extra_account_meta_bytes_vec[34] != 0;
+
+        assert!(!is_writable);
     }
 }
